@@ -2,10 +2,11 @@ package com.example.taskmanager.model;
 
 import com.example.taskmanager.utils.DateUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class Task {
+public class Task implements Serializable {
 
     private UUID mId;
     private String mTitle;
