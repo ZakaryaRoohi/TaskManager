@@ -92,7 +92,7 @@ public class TaskDBRepository implements IRepository<Task> {
         values.put(TaskDBSchema.TaskTable.COLS.DESCRIPTION, task.getDescription());
         values.put(TaskDBSchema.TaskTable.COLS.StartDate, task.getStartDate().getTime());
         values.put(TaskDBSchema.TaskTable.COLS.FinishDate, task.getFinishDate().toString());
-        values.put(TaskDBSchema.TaskTable.COLS.DONE, task.isDone() ? 1 : 0);
+        values.put(TaskDBSchema.TaskTable.COLS.STATE , task.getTaskState().toString());
         return values;
     }
 

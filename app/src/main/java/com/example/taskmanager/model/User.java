@@ -1,6 +1,9 @@
 package com.example.taskmanager.model;
 
+import java.util.UUID;
+
 public class User {
+    private UUID mId;
     private String username;
     private String password;
 

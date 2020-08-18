@@ -1,6 +1,7 @@
 package com.example.taskmanager.model;
 
 import com.example.taskmanager.utils.DateUtils;
+import com.example.taskmanager.utils.TaskState;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,14 +14,18 @@ public class Task implements Serializable {
     private String mDescription;
     private Date mStartDate;
     private Date mFinishDate;
-    private boolean mDone;
+    private TaskState mTaskState;
 
 
-
+    public TaskState getTaskState() {
+        return mTaskState;
+    }
+    public void setTaskState(TaskState taskState) {
+        mTaskState = taskState;
+    }
     public UUID getId() {
         return mId;
     }
-
 
     public String getTitle() {
         return mTitle;
@@ -54,25 +59,19 @@ public class Task implements Serializable {
         mFinishDate = finishDate;
     }
 
-    public boolean isDone() {
-        return mDone;
-    }
 
-    public void setDone(boolean done) {
-        mDone = done;
-    }
-
-    public Task(UUID id, String title, String description, Date startDate, Date finishDate, boolean done) {
+    public Task(UUID id, String title, String description, Date startDate, Date finishDate, TaskState taskState) {
         mId = id;
         mTitle = title;
         mDescription = description;
         mStartDate = startDate;
         mFinishDate = finishDate;
-        mDone = done;
+        mTaskState = taskState;
     }
     public Task(){
         this(UUID.randomUUID());
     }
+
     public Task(UUID randomUUID) {
         mId = randomUUID;
         mStartDate= DateUtils.getRandomDate(2000, 2020);

@@ -14,6 +14,8 @@ public class TaskBaseHelper extends SQLiteOpenHelper {
         super(context, NAME, null, TaskDBSchema.VERSION);
     }
 
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + NAME+"("+
@@ -23,7 +25,7 @@ public class TaskBaseHelper extends SQLiteOpenHelper {
                 TaskDBSchema.TaskTable.COLS.StartDate + "long," +
                 TaskDBSchema.TaskTable.COLS.FinishDate + "long," +
                 TaskDBSchema.TaskTable.COLS.DESCRIPTION + "text," +
-                TaskDBSchema.TaskTable.COLS.DONE + "integer" +
+                TaskDBSchema.TaskTable.COLS.STATE + "text" +
                 ");");
     }
 

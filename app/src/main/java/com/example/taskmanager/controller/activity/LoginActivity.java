@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.taskmanager.R;
+import com.example.taskmanager.model.Task;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -56,14 +57,17 @@ startSignUpActivity();
         mButtonLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mEditTextUsername.getText().toString().equals("") || mEditTextPassword.getText().toString().equals(""))
-                    showToast("Your Username or Password is in correct!");
+//                if(mEditTextUsername.getText().toString().equals("") || mEditTextPassword.getText().toString().equals(""))
+//                    showToast("Your Username or Password is in correct!");
+//
+//                else if(mUserNameClient.equals(mEditTextUsername.getText().toString())&&
+//                        mPasswordClient.equals(mEditTextPassword.getText().toString()))
+//                    showToast("Welcome!");
+//                else
+//                    showToast("Your Username or Password is in correct!");
 
-                else if(mUserNameClient.equals(mEditTextUsername.getText().toString())&&
-                        mPasswordClient.equals(mEditTextPassword.getText().toString()))
-                    showToast("Welcome!");
-                else
-                    showToast("Your Username or Password is in correct!");
+                Intent intent = new Intent(LoginActivity.this, TaskPagerActivity.class);
+                startActivity(intent);
             }
         });
     }

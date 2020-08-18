@@ -13,7 +13,7 @@ public static final String NAME="TaskTable";
             public static final String StartDate = "startDate";
             public static final String FinishDate = "finishDate";
             public static final String DESCRIPTION = "description";
-            public static final String DONE = "done";
+            public static final String STATE = "state";
         }
     }
 

@@ -5,6 +5,7 @@ import android.database.CursorWrapper;
 
 import com.example.taskmanager.database.TaskDBSchema;
 import com.example.taskmanager.model.Task;
+import com.example.taskmanager.utils.TaskState;
 
 import java.util.Date;
 import java.util.UUID;
@@ -15,15 +16,15 @@ public class TaskCursorWrapper  extends CursorWrapper {
         super(cursor);
     }
     public Task getTask(){
+
         String stringUUID = getString(getColumnIndex(TaskDBSchema.TaskTable.COLS.UUID));
         String title = getString(getColumnIndex(TaskDBSchema.TaskTable.COLS.TITLE));
         Date startDate = new Date(getLong(getColumnIndex(TaskDBSchema.TaskTable.COLS.StartDate)));
         Date finishDate = new Date(getLong(getColumnIndex(TaskDBSchema.TaskTable.COLS.FinishDate)));
         String description = getString(getColumnIndex(TaskDBSchema.TaskTable.COLS.DESCRIPTION));
-        boolean done = getInt(getColumnIndex(TaskDBSchema.TaskTable.COLS.DONE)) == 0 ? false : true;
+        TaskState taskState =TaskState.valueOf(getString(getColumnIndex(TaskDBSchema.TaskTable.COLS.STATE)));
 
-        Task task = new Task(UUID.fromString(stringUUID),title,description,startDate,finishDate,done);
-        return task;
+        return new Task(UUID.fromString(stringUUID),title,description,startDate,finishDate, taskState);
 
     }
 }
