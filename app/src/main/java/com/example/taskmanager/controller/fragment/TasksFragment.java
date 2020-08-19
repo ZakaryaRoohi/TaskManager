@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.example.taskmanager.R;
 import com.example.taskmanager.model.Task;
+import com.example.taskmanager.repository.IRepository;
+import com.example.taskmanager.repository.TaskDBRepository;
 import com.example.taskmanager.repository.TasksRepository;
 import com.example.taskmanager.utils.TaskState;
 
@@ -36,13 +38,15 @@ public class TasksFragment extends Fragment {
     public static final String TASK_DETAIL_FRAGMENT_DIALOG_TAG = "TaskDetailFragmentDialogTag";
     public static final int TASK_DETAIL_REQUEST_CODE = 101;
 
-    private TasksRepository mTasksRepository;
+    private IRepository mTasksRepository;
+//    private TasksRepository mTasksRepository;
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
     private TaskState mTaskState;
-
     private LinearLayout mLinearLayout1;
     private LinearLayout mLinearLayout2;
+
+
     public TasksFragment() {
         // Required empty public constructor
     }
@@ -59,7 +63,8 @@ public class TasksFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mTaskState = (TaskState) getArguments().getSerializable(ARG_TASK_STATE);
-        mTasksRepository = TasksRepository.getInstance();
+//        mTasksRepository = TasksRepository.getInstance();
+        mTasksRepository = TaskDBRepository.getInstance(getActivity());
     }
 
     @Override

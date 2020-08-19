@@ -1,10 +1,14 @@
 package com.example.taskmanager.controller.activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +16,8 @@ import android.widget.Toast;
 
 import com.example.taskmanager.R;
 import com.example.taskmanager.model.Task;
+
+import java.util.zip.Inflater;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,14 +30,16 @@ public class LoginActivity extends AppCompatActivity {
     private Button mButtonSignIn;
     private String mUserName;
     private String mPassWord;
-    private String mUserNameClient="";
-    private String mPasswordClient="";
+    private String mUserNameClient = "";
+    private String mPasswordClient = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.setTitle("Login");
+
+
         findAllView();
         setListeners();
     }
@@ -48,9 +56,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //
-                mUserName  = mEditTextUsername.getText().toString();
+                mUserName = mEditTextUsername.getText().toString();
                 mPassWord = mEditTextPassword.getText().toString();
-startSignUpActivity();
+                startSignUpActivity();
 
             }
         }));
@@ -72,6 +80,27 @@ startSignUpActivity();
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_item_setting:
+                Toast.makeText(this,"this Feature will be add soon!",Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_item_users:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     private void showToast(String string) {
         Toast.makeText(this, string, Toast.LENGTH_LONG).show();
@@ -90,10 +119,11 @@ startSignUpActivity();
 //        }
         }
     }
-    private void startSignUpActivity(){
-        Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
-        intent.putExtra(EXTRA_KEY_USERNAME,mUserName);
-        intent.putExtra(EXTRA_KEY_PASSWORD,mPassWord);
+
+    private void startSignUpActivity() {
+        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+        intent.putExtra(EXTRA_KEY_USERNAME, mUserName);
+        intent.putExtra(EXTRA_KEY_PASSWORD, mPassWord);
         startActivityForResult(intent, REQUEST_CODE_SIGN_UP_ACTIVITY);
     }
 }

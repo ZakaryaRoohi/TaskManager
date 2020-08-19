@@ -14,24 +14,23 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.taskmanager.R;
-import com.example.taskmanager.controller.activity.TaskPagerActivity;
+import com.example.taskmanager.repository.IRepository;
+import com.example.taskmanager.repository.TaskDBRepository;
 import com.example.taskmanager.repository.TasksRepository;
 import com.example.taskmanager.utils.TaskState;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class TaskPagerFragment extends Fragment {
-
 
     TaskPagerAdapter mTaskPagerAdapter;
     ViewPager2 mViewPager2;
+
     private FloatingActionButton mFloatingActionButtonAdd;
-private TasksRepository mTasksRepository;
+//    private TasksRepository mTasksRepository;
+    private IRepository mTasksRepository;
+
     public TaskPagerFragment() {
         // Required empty public constructor
     }
@@ -46,7 +45,8 @@ private TasksRepository mTasksRepository;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTasksRepository = TasksRepository.getInstance();
+//        mTasksRepository = TasksRepository.getInstance();
+        mTasksRepository = TaskDBRepository.getInstance(getActivity());
 
     }
 
@@ -61,8 +61,6 @@ private TasksRepository mTasksRepository;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-
         mTaskPagerAdapter = new TaskPagerAdapter(this);
         mViewPager2 = view.findViewById(R.id.pager);
         mViewPager2.setAdapter(mTaskPagerAdapter);
@@ -90,6 +88,7 @@ private TasksRepository mTasksRepository;
         public TaskPagerAdapter(Fragment fragment) {
             super(fragment);
         }
+
         @NonNull
         @Override
 

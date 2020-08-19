@@ -11,9 +11,12 @@ import com.example.taskmanager.database.TaskBaseHelper;
 import com.example.taskmanager.database.TaskDBSchema;
 import com.example.taskmanager.database.cursorwrapper.TaskCursorWrapper;
 import com.example.taskmanager.model.Task;
+import com.example.taskmanager.utils.TaskState;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class TaskDBRepository implements IRepository<Task> {
@@ -34,6 +37,8 @@ public class TaskDBRepository implements IRepository<Task> {
         mDatabase = taskBaseHelper.getWritableDatabase();
     }
 
+
+
     @Override
     public List<Task> getList() {
         List<Task> tasks = new ArrayList<>();
@@ -42,6 +47,21 @@ public class TaskDBRepository implements IRepository<Task> {
             cursorWrapper.moveToFirst();
             while (!cursorWrapper.isAfterLast()) {
                 tasks.add(cursorWrapper.getTask());
+                cursorWrapper.moveToNext();
+            }
+        } finally {
+            cursorWrapper.close();
+        }
+        return tasks;
+    }
+    @Override
+    public List<Task> getList(TaskState taskState) {
+        List<Task> tasks = new ArrayList<>();
+        TaskCursorWrapper cursorWrapper = queryTasks(null, null);
+        try {
+            cursorWrapper.moveToFirst();
+            while (!cursorWrapper.isAfterLast()) {
+                tasks.add(cursorWrapper.getTask(taskState));
                 cursorWrapper.moveToNext();
             }
         } finally {
@@ -92,7 +112,7 @@ public class TaskDBRepository implements IRepository<Task> {
         values.put(TaskDBSchema.TaskTable.COLS.DESCRIPTION, task.getDescription());
         values.put(TaskDBSchema.TaskTable.COLS.StartDate, task.getStartDate().getTime());
         values.put(TaskDBSchema.TaskTable.COLS.FinishDate, task.getFinishDate().toString());
-        values.put(TaskDBSchema.TaskTable.COLS.STATE , task.getTaskState().toString());
+        values.put(TaskDBSchema.TaskTable.COLS.STATE, task.getTaskState().toString());
         return values;
     }
 
@@ -100,12 +120,13 @@ public class TaskDBRepository implements IRepository<Task> {
     public void delete(Task task) {
         String where = TaskDBSchema.TaskTable.COLS.UUID + "=?";
         String[] whereArgs = new String[]{task.getId().toString()};
-        mDatabase.delete(TaskDBSchema.TaskTable.NAME,where,whereArgs);
+        mDatabase.delete(TaskDBSchema.TaskTable.NAME, where, whereArgs);
     }
 
     @Override
     public void insert(Task task) {
-
+        ContentValues values = getTaskContentValue(task);
+        mDatabase.insert(TaskDBSchema.TaskTable.NAME, null, values);
     }
 
     @Override
@@ -116,10 +137,32 @@ public class TaskDBRepository implements IRepository<Task> {
     @Override
     public int getPosition(UUID uuid) {
         List<Task> tasks = getList();
-        for (int i = 0; i <tasks.size() ; i++) {
-            if(tasks.get(i).getId().equals(uuid))
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getId().equals(uuid))
                 return i;
         }
         return -1;
+    }
+    @Override
+    public void addTask() {
+        Task task = new Task();
+        task.setTitle("Task : " + (sTaskDBRepository.getList().size() + 1));
+        task.setDescription("demoTask");
+        task.setStartDate(new Date());
+        task.setFinishDate(new Date());
+        task.setTaskState(randomTaskState());
+        ContentValues values = getTaskContentValue(task);
+        mDatabase.insert(TaskDBSchema.TaskTable.NAME, null, values);
+    }
+
+    private TaskState randomTaskState() {
+        Random random = new Random();
+        int rand = random.nextInt(3);
+        if (rand == 0)
+            return TaskState.DONE;
+        if (rand == 1)
+            return TaskState.DOING;
+        else
+            return TaskState.TODO;
     }
 }
