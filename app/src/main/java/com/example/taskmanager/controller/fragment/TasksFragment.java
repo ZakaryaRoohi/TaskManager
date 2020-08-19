@@ -1,64 +1,66 @@
 package com.example.taskmanager.controller.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import com.example.taskmanager.R;
 import com.example.taskmanager.model.Task;
 import com.example.taskmanager.repository.TasksRepository;
 import com.example.taskmanager.utils.TaskState;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import android.graphics.Color;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
 import java.util.List;
 
 
- class TasksFragment<EndlessRecyclerViewScrollListener> extends Fragment {
+public class TasksFragment extends Fragment {
     /**
      * get username and number of Tasks from Task activity
      */
 
     public static final String ARG_TASK_STATE = "ARG_taskState";
+    public static final String TASK_DETAIL_FRAGMENT_DIALOG_TAG = "TaskDetailFragmentDialogTag";
+    public static final int TASK_DETAIL_REQUEST_CODE = 101;
 
-    public static  final  int TASK_HOLDER_1=0;
-    public static  final  int TASK_HOLDER_2=1;
-
-
-    private String mTaskState;
     private TasksRepository mTasksRepository;
-
     private RecyclerView mRecyclerView;
     private TaskAdapter mAdapter;
-    private FloatingActionButton mButtonAdd;
+    private TaskState mTaskState;
+
+    private LinearLayout mLinearLayout1;
+    private LinearLayout mLinearLayout2;
     public TasksFragment() {
         // Required empty public constructor
     }
-
-
     public static TasksFragment newInstance(TaskState taskState) {
         TasksFragment fragment = new TasksFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_TASK_STATE, String.valueOf(taskState));
+        args.putSerializable(ARG_TASK_STATE, taskState);
         fragment.setArguments(args);
         return fragment;
     }
-    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTaskState = getArguments().getString(ARG_TASK_STATE);
-//        mNumberOfTasks = getArguments().getInt(ARG_NUMB_AER_OF_TASKS);
+
+        mTaskState = (TaskState) getArguments().getSerializable(ARG_TASK_STATE);
         mTasksRepository = TasksRepository.getInstance();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,38 +69,23 @@ import java.util.List;
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         findViews(view);
-        setClickListener();
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        switch (getResources().getConfiguration().orientation) {
-            case 1:
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                break;
-            case 2:
-                mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
-                break;
-        }
-
-
         updateUI();
-
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
 
 
     private void findViews(View view) {
         mRecyclerView = view.findViewById(R.id.recycler_view_tasks);
-        mButtonAdd = (FloatingActionButton) view.findViewById(R.id.floating_action_button_add);
-    }
-    private void setClickListener(){
-        mButtonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mTasksRepository.addTask();
-                Toast.makeText(getActivity(),"repository size updated to " + mTasksRepository.getList().size(),Toast.LENGTH_SHORT).show();
-                updateUI();
-            }
-        });
+        mLinearLayout2 = view.findViewById(R.id.layout2);
+        mLinearLayout1 = view.findViewById(R.id.layout1);
     }
 
     private class TaskHolder extends RecyclerView.ViewHolder {
@@ -111,6 +98,22 @@ import java.util.List;
             super(itemView);
             mTextViewTaskTittle = itemView.findViewById(R.id.list_row_task_title);
             mTextViewTaskState = itemView.findViewById(R.id.list_row_Task_state);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    DatePickerFragment datePickerFragment = DatePickerFragment.newInstance(mCrime.getDate());
+//
+//                    //create parent-child relations between CrimeDetailFragment-DatePickerFragment
+//                    datePickerFragment.setTargetFragment(CrimeDetailFragment.this, DATE_PICKER_REQUEST_CODE);
+//
+//                    datePickerFragment.show(getFragmentManager(), DATE_DIALOG_FRAGMENT_TAG);
+                    TaskDetailFragment taskDetailFragment =  TaskDetailFragment.newInstance();
+                    taskDetailFragment.setTargetFragment(TasksFragment.this,TASK_DETAIL_REQUEST_CODE);
+                    taskDetailFragment.show(getFragmentManager(), TASK_DETAIL_FRAGMENT_DIALOG_TAG);
+
+
+                }
+            });
         }
 
         public void bindTask(Task task) {
@@ -125,15 +128,10 @@ import java.util.List;
         }
     }
 
-
     private class TaskAdapter extends RecyclerView.Adapter<TaskHolder> {
 
         private List<Task> mTasks;
-
-        public void setTasks(List<Task> tasks) {
-            mTasks = tasks;
-        }
-
+        private void setTasks(List<Task> tasks){mTasks=tasks;}
         public TaskAdapter(List<Task> tasks) {
             mTasks = tasks;
         }
@@ -141,33 +139,17 @@ import java.util.List;
         @NonNull
         @Override
         public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // create a view of CrimeHolder for Adapter
-
-//            if (viewType == 0)
-//                return new TaskHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_task, parent, false));
-//            else
-//                return new TaskHolder2(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_task_gray, parent, false));
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             View view = inflater.inflate(R.layout.list_row_task, parent, false);
-
             TaskHolder taskHolder = new TaskHolder(view);
-
             return taskHolder;
-
-
-
         }
 
         @Override
         public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
             Task task = mTasks.get(position);
-
             holder.bindTask(task);
-
-
         }
-
-
 
         @Override
         public int getItemCount() {
@@ -175,25 +157,26 @@ import java.util.List;
         }
     }
 
-
     private void updateUI() {
-        List<Task> tasks = mTasksRepository.getList();
-        if (mAdapter == null) {
-            mAdapter = new TaskAdapter(tasks);
-            mRecyclerView.setAdapter(mAdapter);
-        } else {
-            mAdapter.setTasks(tasks);
-            mAdapter.notifyDataSetChanged();
+        List<Task> tasks = mTasksRepository.getList(mTaskState);
+//        if (mAdapter == null) {
+        mAdapter = new TaskAdapter(tasks);
+        mAdapter.setTasks(tasks);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
 
+//        } else {mAdapter.setTasks(tasks);
+//            mAdapter.notifyDataSetChanged();
+//        }
+        if (tasks.size() == 0) {
+//            Toast.makeText(getActivity(), "repository is cleared "+mRepository.getList().size(), Toast.LENGTH_SHORT).show();
+            mLinearLayout1.setVisibility(View.GONE);
+            mLinearLayout2.setVisibility(View.VISIBLE);
+        } else if (mTasksRepository.getList().size() != 0) {
+            mLinearLayout1.setVisibility(View.VISIBLE);
+            mLinearLayout2.setVisibility(View.GONE);
         }
 
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUI();
     }
 
 

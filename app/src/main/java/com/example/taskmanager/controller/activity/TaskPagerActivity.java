@@ -6,15 +6,11 @@ import android.os.Bundle;
 
 import com.example.taskmanager.R;
 
-import android.os.Bundle;
-
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.taskmanager.controller.fragment.CollectionDemoFragment;
+import com.example.taskmanager.controller.fragment.TaskPagerFragment;
 
 public class TaskPagerActivity extends AppCompatActivity {
     /**
@@ -31,7 +27,7 @@ public class TaskPagerActivity extends AppCompatActivity {
         if(fragment == null) {
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.fragment_container, CollectionDemoFragment.newInstance())
+                    .replace(R.id.fragment_container, TaskPagerFragment.newInstance())
                     .commit();
         }
 //        CollectionDemoFragment fragment = new CollectionDemoFragment();

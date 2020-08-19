@@ -12,7 +12,7 @@ import java.util.Random;
 public class TasksRepository implements Serializable {
     private static TasksRepository sTasksRepository;
     private List<Task> mTasks;
-    public   static int mNumberOfTasks;
+    public   static int mNumberOfTasks = 3;
 
 //    public  int getNumberOfTasks() {
 //        return mNumberOfTasks;

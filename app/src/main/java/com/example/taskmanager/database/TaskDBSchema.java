@@ -3,8 +3,9 @@ package com.example.taskmanager.database;
 public class TaskDBSchema {
     public static final String NAME = "TaskDB.db";
     public static final int VERSION = 1;
+
     public static final class TaskTable {
-public static final String NAME="TaskTable";
+        public static final String NAME = "TaskTable";
 
         public static final class COLS {
             public static final String ID = "id";

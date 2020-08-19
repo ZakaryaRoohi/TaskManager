@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    >
+
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="title" />
+
+    <EditText
+        android:id="@+id/task_title"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:hint="Enter task title"
+        />
+
+    <TextView
+
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Task Description" />
+
+    <EditText
+        android:id="@+id/text_view_description"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="119dp"
+        android:layout_marginBottom="4dp"
+        android:hint="Enter your description" />
+
+    <TextView
+
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start time " />
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+    <Button
+        android:id="@+id/start_task_date"
+        android:layout_width="150dp"
+        android:layout_marginRight="20dp"
+        android:hint="start date"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/start_task_time"
+        android:layout_width="150dp"
+        android:hint="star time"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+    <TextView
+
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="end time " />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/end_task_date"
+            android:layout_width="150dp"
+            android:layout_marginRight="20dp"
+            android:hint="end date"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/end_task_time"
+            android:layout_width="150dp"
+            android:hint="end time"
+
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_discard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:background="#00FFFFFF"
+            android:text="DISCARD" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
+            android:text="Save"
+            android:textColor="#217025" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

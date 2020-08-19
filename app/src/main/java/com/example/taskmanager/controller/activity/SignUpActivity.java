@@ -52,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        mButtonSignUp = findViewById(R.id.button_Sign_up);
+        mButtonSignUp = findViewById(R.id.button_sign_in);
         mEditTextUsername = findViewById(R.id.edit_text_username);
         mEditTextPassword = findViewById(R.id.edit_text_password);
     }

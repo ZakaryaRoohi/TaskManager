@@ -27,6 +27,10 @@ public class TaskBaseHelper extends SQLiteOpenHelper {
                 TaskDBSchema.TaskTable.COLS.DESCRIPTION + "text," +
                 TaskDBSchema.TaskTable.COLS.STATE + "text" +
                 ");");
+        db.execSQL("CREATE TABLE " + UserDBSchema.NAME + "(" +
+                UserDBSchema.UserTable.COLS.USERNAME + " integer primary key autoincrement," +
+                UserDBSchema.UserTable.COLS.PASSWORD + " text" +
+                ");");
     }
 
     @Override
