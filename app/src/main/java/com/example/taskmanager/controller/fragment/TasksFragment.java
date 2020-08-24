@@ -65,6 +65,7 @@ public class TasksFragment extends Fragment {
         mTaskState = (TaskState) getArguments().getSerializable(ARG_TASK_STATE);
 //        mTasksRepository = TasksRepository.getInstance();
         mTasksRepository = TaskDBRepository.getInstance(getActivity());
+
     }
 
     @Override
@@ -83,6 +84,8 @@ public class TasksFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateUI();
+        Toast.makeText(getActivity(),mTaskState+"repository size  " + mTasksRepository.getList().size(), Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -112,7 +115,7 @@ public class TasksFragment extends Fragment {
 //                    datePickerFragment.setTargetFragment(CrimeDetailFragment.this, DATE_PICKER_REQUEST_CODE);
 //
 //                    datePickerFragment.show(getFragmentManager(), DATE_DIALOG_FRAGMENT_TAG);
-                    TaskDetailFragment taskDetailFragment =  TaskDetailFragment.newInstance();
+                    TaskDetailFragment taskDetailFragment =  TaskDetailFragment.newInstance(mTask.getId());
                     taskDetailFragment.setTargetFragment(TasksFragment.this,TASK_DETAIL_REQUEST_CODE);
                     taskDetailFragment.show(getFragmentManager(), TASK_DETAIL_FRAGMENT_DIALOG_TAG);
 

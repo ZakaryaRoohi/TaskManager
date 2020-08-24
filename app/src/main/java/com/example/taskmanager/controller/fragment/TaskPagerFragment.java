@@ -22,6 +22,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.Random;
+
 public class TaskPagerFragment extends Fragment {
 
     TaskPagerAdapter mTaskPagerAdapter;
@@ -78,8 +80,8 @@ public class TaskPagerFragment extends Fragment {
         mFloatingActionButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTasksRepository.addTask();
-                Toast.makeText(getActivity(), "repository size updated to " + mTasksRepository.getList().size(), Toast.LENGTH_SHORT).show();
+                TaskState taskState = randomTaskState();
+                mTasksRepository.addTask(taskState);
             }
         });
     }
@@ -112,5 +114,15 @@ public class TaskPagerFragment extends Fragment {
         }
     }
 
+    private  static TaskState randomTaskState() {
+        Random random = new Random();
+        int rand = random.nextInt(3);
+        if (rand == 0)
+            return TaskState.DONE;
+        if (rand == 1)
+            return TaskState.DOING;
+        else
+            return TaskState.TODO;
+    }
 
 }

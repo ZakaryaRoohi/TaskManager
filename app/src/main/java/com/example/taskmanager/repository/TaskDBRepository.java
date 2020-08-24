@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -61,7 +62,7 @@ public class TaskDBRepository implements IRepository<Task> {
         try {
             cursorWrapper.moveToFirst();
             while (!cursorWrapper.isAfterLast()) {
-                tasks.add(cursorWrapper.getTask(taskState));
+                tasks.add(cursorWrapper.getTask());
                 cursorWrapper.moveToNext();
             }
         } finally {
@@ -70,9 +71,9 @@ public class TaskDBRepository implements IRepository<Task> {
         return tasks;
     }
 
-    private TaskCursorWrapper queryTasks(String selction, String[] selectionArgs) {
+    private TaskCursorWrapper queryTasks(String selection, String[] selectionArgs) {
         Cursor cursor = mDatabase.query(TaskDBSchema.TaskTable.NAME,
-                null, selction, selectionArgs, null, null, null);
+                null, selection, selectionArgs, null, null, null);
         TaskCursorWrapper taskCursorWrapper = new TaskCursorWrapper(cursor);
         return taskCursorWrapper;
     }
@@ -144,18 +145,21 @@ public class TaskDBRepository implements IRepository<Task> {
         return -1;
     }
     @Override
-    public void addTask() {
+    public void addTask(TaskState taskState) {
         Task task = new Task();
         task.setTitle("Task : " + (sTaskDBRepository.getList().size() + 1));
         task.setDescription("demoTask");
         task.setStartDate(new Date());
         task.setFinishDate(new Date());
-        task.setTaskState(randomTaskState());
+        task.setTaskState(taskState);
         ContentValues values = getTaskContentValue(task);
+//        mDatabase.insert(TaskDBSchema.TaskTable.NAME, null, values);
         mDatabase.insert(TaskDBSchema.TaskTable.NAME, null, values);
+//        Toast.makeText(this, "Create :  "+task.toString(), Toast.LENGTH_SHORT).show();
+
     }
 
-    private TaskState randomTaskState() {
+    private  static TaskState randomTaskState() {
         Random random = new Random();
         int rand = random.nextInt(3);
         if (rand == 0)

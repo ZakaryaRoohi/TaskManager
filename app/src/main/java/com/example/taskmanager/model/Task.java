@@ -76,4 +76,16 @@ public class Task implements Serializable {
         mId = randomUUID;
         mStartDate= DateUtils.getRandomDate(2000, 2020);
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "mId=" + mId +
+                ", mTitle='" + mTitle + '\'' +
+                ", mDescription='" + mDescription + '\'' +
+                ", mStartDate=" + mStartDate +
+                ", mFinishDate=" + mFinishDate +
+                ", mTaskState=" + mTaskState +
+                '}';
+    }
 }

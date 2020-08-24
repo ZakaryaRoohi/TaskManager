@@ -16,5 +16,5 @@ public interface IRepository<E> {
     void insert(E e);
     void insertList(List<E> list);
     int getPosition(UUID uuid);
-    void addTask();
+    void addTask(TaskState e);
 }
